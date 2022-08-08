@@ -1,4 +1,15 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) URL Downlaoder project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+Some requirements.
+[ ] 1. The program can accept a single URI or a list of URIs to download 
+[ ] 2. It should be possible to configure download location as well as number of retries.
+[ ] 3. It should support HTTP/HTTPS, FTP and SFTP 
+[ ] 4. It should be extensible. Please pay attention to how new protocols can be added
+[ ] 5. It should handle retries and partial downloads. If a file fails to fully download then the partial files must be deleted
+[ ] 6. It should support parallel downloads 
+[ ] 7. It should handle name clashes. If two different resources have the same name, both should download correctly. If the same resource is downloaded twice, it should overwrite the previous one
+[ ] 8. Program architecture is important.
+[ ] 9. Don't forget about tests.
 
 ## Getting Started
 
@@ -12,11 +23,6 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
 ## Learn More
 
