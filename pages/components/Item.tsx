@@ -26,9 +26,7 @@ const Item = (props:Props) => {
                 <button  
                     onClick={props.onRemove}
                     className={styles.addBtn}
-                >
-                    <p>-</p>
-                </button>
+                >-</button>
             )}
             <input 
                 value={value}
@@ -42,9 +40,7 @@ const Item = (props:Props) => {
                 <button  
                     onClick={props.onAdd}
                     className={styles.addBtn}
-                >
-                     <p>+</p>
-                </button>
+                >+</button>
             )}
          
       </div>
