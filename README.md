@@ -1,15 +1,15 @@
 This is a [Next.js](https://nextjs.org/) URL Downlaoder project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-Some requirements.
-[ ] 1. The program can accept a single URI or a list of URIs to download 
-[ ] 2. It should be possible to configure download location as well as number of retries.
-[ ] 3. It should support HTTP/HTTPS, FTP and SFTP 
-[ ] 4. It should be extensible. Please pay attention to how new protocols can be added
-[ ] 5. It should handle retries and partial downloads. If a file fails to fully download then the partial files must be deleted
-[ ] 6. It should support parallel downloads 
-[ ] 7. It should handle name clashes. If two different resources have the same name, both should download correctly. If the same resource is downloaded twice, it should overwrite the previous one
-[ ] 8. Program architecture is important.
-[ ] 9. Don't forget about tests.
+Project requirements.
+- [ ] 1. The program can accept a single URI or a list of URIs to download 
+- [ ] 2. It should be possible to configure download location as well as number of retries.
+- [ ] 3. It should support HTTP/HTTPS, FTP and SFTP 
+- [ ] 4. It should be extensible. Please pay attention to how new protocols can be added
+- [ ] 5. It should handle retries and partial downloads. If a file fails to fully download then the partial files must be deleted
+- [ ] 6. It should support parallel downloads 
+- [ ] 7. It should handle name clashes. If two different resources have the same name, both should download correctly. If the same resource is downloaded twice, it should overwrite the previous one
+- [ ] 8. Program architecture is important.
+- [ ] 9. Don't forget about tests.
 
 ## Getting Started
 
