@@ -15,8 +15,12 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
+    "types": [
+      "jest"
+    ],
     "paths": {
-      "@/components/*": ["components/*"]
+      "*":["*", "src/*"],
+      "tests":["__tests__/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
