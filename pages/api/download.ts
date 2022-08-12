@@ -18,9 +18,10 @@ export type Params = {
 }
 
 type Data = {
-  data?: any
-  message?: string
-  error?: string
+    status:number,
+    data?: any
+    message?: string
+    error?: string
 }
 
 type ActionResponse = {
@@ -36,7 +37,10 @@ export default function handler(
   res: NextApiResponse<Data>
 ):any {
     if (req.method !== 'POST') {
-        res.status(405).send({ message: 'Method not allowed' })
+        res.status(405).send({ 
+            status:res.statusCode,
+            error:'Method not allowed' 
+        })
         return
     }
 
@@ -45,6 +49,7 @@ export default function handler(
 
     if(urls.length <= 0){
         res.status(400).json({
+            status:res.statusCode,
             error: 'urls is empty'
         })
         return;
@@ -135,41 +140,39 @@ export default function handler(
         })
     }    
  
-    const actions:Promise<boolean>[] = urls.map((url:string) => {
+    const actions:Promise<any>[] = urls.map((url:string) => {
         return new Promise(async (resolve , reject) => {
             let tries = options.retries || 0;
             let u = new URL(url);
             const fileName = path.basename(url);
             
             if(!AcceptedProtocols.includes(u.protocol)){
-                reject(false)
-                // throw Error(`Protocol ${u.protocol} is not supported`)
+                reject({message:`Protocol ${u.protocol} is not supported`, status:"failed"})
             }
 
             if(u.protocol === "ftp:"){
                 return await getFTPFile(u , location , fileName) ;
             }
 
-            return await getFile(url , location , fileName) ;
+            return await getFile(url , location , fileName , () => resolve({
+                uri:path.resolve(__dirname, location, fileName), 
+                status:"success"
+            })) ;
         })
         // return getFile(u).catch((err) => retry(tries, () => getFile(u)))
     })
 
 
     return Promise.all(actions).then(data => {
-        console.log("actions" , actions, data.forEach(d => console.log(d)))
-
         res.status(200).json({ 
             data,
-            message: 'download completed'
+            message:res.statusMessage,
+            status:res.statusCode
         })
-        // console.log("success" , res.statusCode, res.statusMessage)
     }).catch((err:any) => {
         res.status(500).json({
-            error: 'download failed' + err
+            status:res.statusCode,
+            error: 'Error:' + err.message
         })
-        // console.log("error" , res.statusCode , res.statusMessage)
-    }) 
-
-    
+    })     
 }
