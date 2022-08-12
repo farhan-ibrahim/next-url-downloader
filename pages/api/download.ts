@@ -9,7 +9,7 @@ import axios, { AxiosResponse } from 'axios';
 
 type Options = {
     retries?: number;
-    location: string;
+    location? : string;
 }
 
 export type Params = {
@@ -45,7 +45,8 @@ export default function handler(
     }
 
     const { urls , options  } = req.body as Params;
-    const location = options.location;
+    const location = options.location || "download";
+    let retries = options.retries || 0;
 
     if(urls.length <= 0){
         res.status(400).json({
@@ -55,18 +56,17 @@ export default function handler(
         return;
     }
 
-    const getFTPFile = async (url:URL, folder:string , fileName:string ):Promise<ActionResponse>=> {
+    const getFTPFile = async (url:URL, folder:string , fileName:string):Promise<ActionResponse>=> {
         return new Promise(async (resolve, reject) => {
             const client = new ftp.Client()
             client.ftp.verbose = true;
             const destination = path.resolve(folder, fileName);
 
-    
             try {
                 await client.access({
                     'host': url.host,
-                    'user': 'dlpuser' ,// url.username,
-                    'password': 'rNrKYTX9g7z3RgJRmxWuGHbeu' //url.password,
+                    'user': url.username,  // 'dlpuser'
+                    'password': url.password, //'rNrKYTX9g7z3RgJRmxWuGHbeu',
                 });
                 await client.downloadTo(destination, fileName);
                 resolve({
@@ -141,25 +141,27 @@ export default function handler(
     }    
  
     const actions:Promise<any>[] = urls.map((url:string) => {
+
         return new Promise(async (resolve , reject) => {
-            let tries = options.retries || 0;
             let u = new URL(url);
             const fileName = path.basename(url);
+            const uri = path.resolve(__dirname, location, fileName)
+            const callback = () => resolve({uri, status:"success"})
+
             
             if(!AcceptedProtocols.includes(u.protocol)){
                 reject({message:`Protocol ${u.protocol} is not supported`, status:"failed"})
             }
 
             if(u.protocol === "ftp:"){
-                return await getFTPFile(u , location , fileName) ;
-            }
+                return await getFTPFile(u , location , fileName).catch((err) => 
+                retry(retries, () => getFTPFile(u , location , fileName))
+            )}
 
-            return await getFile(url , location , fileName , () => resolve({
-                uri:path.resolve(__dirname, location, fileName), 
-                status:"success"
-            })) ;
+            return await getFile(url , location , fileName , callback ).catch((err) => 
+                retry(retries, () => getFile(url , location , fileName , callback))
+            );
         })
-        // return getFile(u).catch((err) => retry(tries, () => getFile(u)))
     })
 
 
