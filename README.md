@@ -23,6 +23,48 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## How to use
+### From Webpage
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+Enter url to be downloaded (ex : "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg")
+Specify folder and number of retries and click download
+
+### Using Postman
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+Then run,
+
+```bash
+ngrok http 3000
+
+Create a post request with body
+```
+{
+    "urls":[< url1 >, < url2 >],
+    "options":{
+        "location":< folder name >,
+        "retries:< number of retries >
+    }
+}
+
+```
 
 ## Learn More
 
